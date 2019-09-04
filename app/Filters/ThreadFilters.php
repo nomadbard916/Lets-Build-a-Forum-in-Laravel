@@ -27,11 +27,12 @@ class ThreadFilters extends Filters
     }
 
     /**
-     * Filter the query accordin to most popular threads
+     * Filter the query according to most popular threads
      *
      * @return $this
      */
-    protected function popular(){
+    protected function popular()
+    {
 
         $this->builder->getQuery()->orders = [];
 
