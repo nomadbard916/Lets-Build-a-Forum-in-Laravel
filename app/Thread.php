@@ -8,14 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Thread extends Model
 {
+    use RecordsActivity;
+
     /**
      * Don't auto-apply mass assignment protection.
      *
      * @var array
      */
     protected $guarded = [];
-    protected $with = ['creator', 'channel'];
-
+    protected $with    = ['creator', 'channel'];
 
     protected static function boot()
     {
@@ -25,12 +26,15 @@ class Thread extends Model
             $builder->withCount('replies');
         });
 
-        static::deleting(function($thread){
+        static::deleting(function ($thread) {
             $thread->replies->delete();
         });
 
 
+
     }
+
+
 
     /**
      * Get a string path for the thread.
