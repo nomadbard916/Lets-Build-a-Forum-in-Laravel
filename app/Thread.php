@@ -5,6 +5,7 @@ namespace App;
 use App\Filters\ThreadFilters;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Thread extends Model
 {
@@ -97,5 +98,15 @@ class Thread extends Model
     public function scopeFilter($query, ThreadFilters $filters)
     {
         return $filters->apply($query);
+    }
+
+    public function activity()
+    {
+        return $this->hasMany(Activity::class);
+    }
+
+    public function thread()
+    {
+        return $this->belongsTo(Thread::class);
     }
 }
