@@ -32,6 +32,12 @@ window.axios.defaults.headers.common = {
     'X-Requested-With': 'XMLHttpRequest'
 };
 
+window.events = new Vue();
+
+window.flash = function (message) {
+    window.events.$emit('flash', message);
+};
+
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting
