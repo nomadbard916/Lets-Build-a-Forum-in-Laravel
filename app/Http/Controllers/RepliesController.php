@@ -43,4 +43,18 @@ class RepliesController extends Controller
         return back();
     }
 
+     /**
+     * Update an existing reply.
+     *
+     * @param Reply $reply
+     */
+    public function update(Reply $reply)
+    {
+        $this->authorize('update', $reply);
+
+        $this->validate(request(), ['body' => 'required']);
+
+        $reply->update(request(['body']));
+    }
+
 }

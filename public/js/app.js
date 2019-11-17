@@ -11650,6 +11650,7 @@ __webpack_require__(32);
  */
 
 Vue.component('flash', __webpack_require__(36));
+Vue.component('reply', __webpack_require__(56));
 
 var app = new Vue({
   el: '#app'
@@ -44982,6 +44983,66 @@ module.exports = function listToStyles (parentId, list) {
   return styles
 }
 
+
+/***/ }),
+/* 56 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(37)(
+  /* script */
+  __webpack_require__(57),
+  /* template */
+  null,
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "E:\\Coding_projects\\Lets-Build-a-Forum-in-Laravel\\resources\\assets\\js\\components\\Reply.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-a624e196", Component.options)
+  } else {
+    hotAPI.reload("data-v-a624e196", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 57 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['attributes'],
+  data: function data() {
+    return {
+      editing: false,
+      body: this.attributes.body
+    };
+  },
+
+  methods: {
+    update: function update() {
+      axios.patch('/replies/' + this.attributes.id, {
+        body: this.body
+      });
+      this.editing = false;
+      flash('Updated!');
+    }
+  }
+});
 
 /***/ })
 /******/ ]);
