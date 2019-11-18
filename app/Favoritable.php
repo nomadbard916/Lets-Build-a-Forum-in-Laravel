@@ -28,6 +28,15 @@ trait Favoritable
         }
     }
 
+    /**
+     * Unfavorite the current reply.
+     */
+    public function unfavorite()
+    {
+        $attributes = ['user_id' => auth()->id()];
+        $this->favorites()->where($attributes)->delete();
+    }
+
     public function isFavorited()
     {
         // casting the value to boolean with !!, which is equal to (bool) $any_value
@@ -39,4 +48,16 @@ trait Favoritable
     {
         return $this->favorites->count();
     }
+
+    /**
+     * Fetch the favorited status as a property.
+     *
+     * @return bool
+     */
+    public function getIsFavoritedAttribute()
+    {
+        return $this->isFavorited();
+    }
+
+
 }
