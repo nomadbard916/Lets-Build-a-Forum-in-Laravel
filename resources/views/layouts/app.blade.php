@@ -16,8 +16,9 @@
 
         <!-- Scripts -->
         <script>
-            window.Laravel = {!! json_encode([
+            window.App = {!! json_encode([
             'csrfToken' => csrf_token(),
+            'signedIn' => Auth::check()
         ]) !!};
         </script>
 
