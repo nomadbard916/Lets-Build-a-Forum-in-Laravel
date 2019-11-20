@@ -3,22 +3,26 @@
     <div v-for="reply in items" @deleted="remove(index)">
       <reply :data="reply"></reply>
     </div>
+    <new-reply :endpoint="endpoint" @created="add"></new-reply>
   </div>
+
 </template>
 
 <script>
   import Reply from './Reply.vue'
+  import NewReply from './NewReply.vue'
 
   export default {
     props: ['data'],
 
     components: {
-      Reply
+      Reply, NewReply
     },
 
     data() {
       return {
-        items: this.data
+        items: this.data,
+        endpoint: location.pathname + '/replies'
       }
     },
 
