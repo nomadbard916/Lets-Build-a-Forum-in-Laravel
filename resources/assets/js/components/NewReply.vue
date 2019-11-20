@@ -18,7 +18,7 @@
 
  <script>
    export default {
-     props: ['endpoint'],
+
      data() {
        return {
          body: ''
@@ -31,7 +31,7 @@
      },
      methods: {
        addReply() {
-         axios.post(this.endpoint, {
+         axios.post(location.pathname + '/replies', {
              body: this.body
            })
            .then(({data}) => {

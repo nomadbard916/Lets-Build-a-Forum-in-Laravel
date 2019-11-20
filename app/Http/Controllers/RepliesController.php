@@ -12,7 +12,10 @@ class RepliesController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth',
+            ['except' => 'index']# make index act like API so it doesn't need auth
+        )
+        ;
     }
 
     /**
@@ -22,6 +25,18 @@ class RepliesController extends Controller
      * @param  Thread  $thread
      * @return \Illuminate\Http\RedirectResponse
      */
+
+    /**
+     * Fetch all relevant replies.
+     *
+     * @param int    $channelId
+     * @param Thread $thread
+     */
+    public function index($channelId, Thread $thread)
+    {
+        return $thread->replies()->paginate(20);
+    }
+
     public function store($channelId, Thread $thread)
     {
         $this->validate(request(), ['body' => 'required']);
@@ -39,20 +54,19 @@ class RepliesController extends Controller
 
     }
 
-
     public function destroy(Reply $reply)
     {
         $this->authorize('update', $reply);
 
         $reply->delete();
 
-         if (request()->expectsJson()) {
+        if (request()->expectsJson()) {
             return response(['status' => 'Reply deleted']);
         }
         return back();
     }
 
-     /**
+    /**
      * Update an existing reply.
      *
      * @param Reply $reply
