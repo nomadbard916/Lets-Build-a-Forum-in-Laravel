@@ -19,7 +19,7 @@ class ThreadTest extends TestCase
     }
 
     /** @test */
-    function a_thread_can_make_a_string_path()
+    public function a_thread_can_make_a_string_path()
     {
         $thread = create('App\Thread');
 
@@ -29,13 +29,13 @@ class ThreadTest extends TestCase
     }
 
     /** @test */
-    function a_thread_has_a_creator()
+    public function a_thread_has_a_creator()
     {
         $this->assertInstanceOf('App\User', $this->thread->creator);
     }
 
     /** @test */
-    function a_thread_has_replies()
+    public function a_thread_has_replies()
     {
         $this->assertInstanceOf(
             'Illuminate\Database\Eloquent\Collection', $this->thread->replies
@@ -46,18 +46,47 @@ class ThreadTest extends TestCase
     public function a_thread_can_add_a_reply()
     {
         $this->thread->addReply([
-            'body' => 'Foobar',
-            'user_id' => 1
+            'body'    => 'Foobar',
+            'user_id' => 1,
         ]);
 
         $this->assertCount(1, $this->thread->replies);
     }
 
     /** @test */
-    function a_thread_belongs_to_a_channel()
+    public function a_thread_belongs_to_a_channel()
     {
         $thread = create('App\Thread');
 
         $this->assertInstanceOf('App\Channel', $thread->channel);
     }
+
+    /** @test */
+    public function a_thread_can_be_subscribed_to()
+    {
+
+        // Given we have a thread and a authenticated user
+        $thread = create('App\Thread');
+        // when the user subscribes to the thread
+        $thread->subscribe($userId = 1);
+        // then we should be able to fetch all threads that the user has subscribed to
+        $this->assertEquals(
+            1,
+            $thread->subscriptions()->where('user_id', $userId)->count()
+        );
+    }
+
+    /** @test */
+    public function a_thread_can_be_unsubscribed_from()
+    {
+        // given we have a thread
+        $thread = create('App\Thread');
+        // and a user who is subscribed to the thread
+        $thread->subscribe($userId = 1);
+        // when the thread is unsubscribed from
+        $thread->unsubscribe($userId);
+        // then the count of thread's subscription should be 0
+        $this->assertCount(0, $thread->subscriptions);
+    }
+
 }

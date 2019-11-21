@@ -107,4 +107,38 @@ class Thread extends Model
     {
         return $this->belongsTo(Thread::class);
     }
+
+    /**
+     * A thread can have many subscriptions.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function subscriptions()
+    {
+        return $this->hasMany(ThreadSubscription::class);
+    }
+
+     /**
+     * Subscribe a user to the current thread.
+     *
+     * @param int|null $userId
+     */
+    public function subscribe($userId = null)
+    {
+        $this->subscriptions()->create([
+            'user_id' => $userId ?: auth()->id()
+        ]);
+    }
+
+    /**
+     * Unsubscribe a user from the current thread.
+     *
+     * @param int|null $userId
+     */
+    public function unsubscribe($userId = null)
+    {
+        $this->subscriptions()
+            ->where('user_id', $userId ?: auth()->id())
+            ->delete();
+    }
 }
