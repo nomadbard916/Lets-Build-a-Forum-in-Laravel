@@ -9,7 +9,6 @@ use App\Filters\ThreadFilters;
 
 class ThreadsController extends Controller
 {
-
     /**
      * ThreadsController constructor.
      */
@@ -21,8 +20,9 @@ class ThreadsController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param  Channel      $channel
+     * @param Channel       $channel
      * @param ThreadFilters $filters
+     *
      * @return \Illuminate\Http\Response
      */
     public function index(Channel $channel, ThreadFilters $filters)
@@ -31,7 +31,6 @@ class ThreadsController extends Controller
 
         if (request()->wantsJson()) {
             return $threads;
-
         }
 
         return view('threads.index', compact('threads'));
@@ -50,7 +49,8 @@ class ThreadsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -75,8 +75,9 @@ class ThreadsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  integer     $channel
-     * @param  \App\Thread $thread
+     * @param int         $channel
+     * @param \App\Thread $thread
+     *
      * @return \Illuminate\Http\Response
      */
     public function show($channel, Thread $thread)
@@ -84,25 +85,24 @@ class ThreadsController extends Controller
         return view('threads.show', compact('thread'));
     }
 
-
     public function destroy($channel, Thread $thread)
     {
         $this->authorize('update', $thread);
-
 
         $thread->delete();
         if (request()->wantsJson()) {
             return response([], 204);
         }
+
         return redirect('/threads');
     }
-
 
     /**
      * Fetch all relevant threads.
      *
      * @param Channel       $channel
      * @param ThreadFilters $filters
+     *
      * @return mixed
      */
     protected function getThreads(Channel $channel, ThreadFilters $filters)

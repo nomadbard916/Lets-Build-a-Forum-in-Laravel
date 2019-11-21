@@ -45347,6 +45347,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
       this.dataSet = data;
       this.items = data.data;
+
+      window.scrollTo(0, 0);
     },
     url: function url(page) {
       if (!page) {
