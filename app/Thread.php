@@ -171,4 +171,19 @@ class Thread extends Model
             ->where('user_id', $userId ?: auth()->id())
             ->delete();
     }
+
+    /**
+     * Determine if the thread has been updated since the user last read it.
+     *
+     * @param  User $user
+     * @return bool
+     */
+    public function hasUpdatesFor($user)
+    {
+        // look in the cache for the proper key
+        $key = sprintf("users.%s.visits.%s", auth()->id(), $this->id);
+
+        // compare that carbon instance wth the $thread->updated_at
+        return $this->updated_at > cache($key);
+    }
 }
