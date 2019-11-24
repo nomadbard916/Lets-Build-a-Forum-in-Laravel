@@ -25,7 +25,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token', 'email'
+        'password', 'remember_token', 'email',
     ];
 
     /**
@@ -47,7 +47,7 @@ class User extends Authenticatable
         return $this->hasMany(Thread::class)->latest();
     }
 
-      /**
+    /**
      * Record that the user has read the given thread.
      *
      * @param Thread $thread
@@ -69,5 +69,15 @@ class User extends Authenticatable
     public function visitedThreadCacheKey($thread)
     {
         return sprintf("users.%s.visits.%s", $this->id, $thread->id);
+    }
+
+    /**
+     * Fetch the last published reply for the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function lastReply()
+    {
+        return $this->hasOne(Reply::class)->latest();
     }
 }
