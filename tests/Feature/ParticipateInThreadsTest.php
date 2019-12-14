@@ -103,7 +103,7 @@ class ParticipateInThreadsTest extends TestCase
         $reply  = make('App\Reply', [
             'body' => 'Yahoo Customer Support',
         ]);
-        $this->post($thread->path() . '/replies', $reply->toArray())->assertStatus(422);
+        $this->json('post', $thread->path() . '/replies', $reply->toArray())->assertStatus(422);
     }
 
     /** @test */
