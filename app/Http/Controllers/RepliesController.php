@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use App\Reply;
 use App\Thread;
 use App\Inspections\Spam;
-use App\Http\Requests\CreatePostRequest;
 use Illuminate\Support\Facades\Gate;
+use App\Notifications\YouWereMentioned;
+use App\Http\Requests\CreatePostRequest;
 
 class RepliesController extends Controller
 {
@@ -42,11 +44,26 @@ class RepliesController extends Controller
 
     public function store($channelId, Thread $thread, CreatePostRequest $form)
     {
-
         return $thread->addReply([
             'body'    => request('body'),
             'user_id' => auth()->id(),
         ])->load('owner');
+
+        // inspect the body of the reply for username mentions
+        // preg_match_all('/\@([^\s\.]+)/', $this->body, $matches);
+
+        // $names = $matches[1];
+
+        // // foreach mentioned user, notify them
+        // foreach ($names as $name) {
+        //     $user = User::whereName($name)->first();
+
+        //     if ($user) {
+        //         $user->notify(new YouWereMentioned);
+        //     }
+        // }
+
+
 
     }
 

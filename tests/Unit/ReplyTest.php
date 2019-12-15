@@ -2,8 +2,9 @@
 
 namespace Tests\Unit;
 
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Carbon\Carbon;
 use Tests\TestCase;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class ReplyTest extends TestCase
 {
@@ -25,6 +26,16 @@ class ReplyTest extends TestCase
 
         $reply->created_at = Carbon::now()->subMonth();
         $this->assertFalse($reply->wasJustPublished());
+    }
+
+    /** @test */
+    public function it_can_detect_all_mentioned_users_in_the_body()
+    {
+        $reply = create('App\Reply', [
+            'body' => '@JaneDoe wants to talk to @JohnDoe',
+        ]);
+        $this->assertEquals(['JaneDoe', 'JohnDoe'], $reply->mentionedUsers());
+
     }
 
 }
