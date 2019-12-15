@@ -51038,6 +51038,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       expression: "body"
     }],
     staticClass: "form-control",
+    attrs: {
+      "required": ""
+    },
     domProps: {
       "value": (_vm.body)
     },
