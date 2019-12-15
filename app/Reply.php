@@ -20,7 +20,7 @@ class Reply extends Model
      *
      * @var array
      */
-    protected $with    = ['owner', 'favorites'];
+    protected $with = ['owner', 'favorites'];
 
     /**
      * The accessors to append to the model's array form.
@@ -32,14 +32,13 @@ class Reply extends Model
     protected static function boot()
     {
         parent::boot();
-        static::created(function($reply){
+        static::created(function ($reply) {
             $reply->thread->increment('replies_count');
         });
-        static::deleted(function($reply){
+        static::deleted(function ($reply) {
             $reply->thread->decrement('replies_count');
         });
     }
-
 
     /**
      * A reply has an owner.
@@ -50,7 +49,6 @@ class Reply extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
-
 
     public function path()
     {
@@ -74,9 +72,23 @@ class Reply extends Model
      */
     public function mentionedUsers()
     {
-        preg_match_all('/\@([^\s\.]+)/', $this->body, $matches);
+        preg_match_all('/@([\w\-]+)/', $this->body, $matches);
+
         return $matches[1];
     }
 
+    /**
+     * Set the body attribute.
+     *
+     * @param string $body
+     */
+    public function setBodyAttribute($body)
+    {
+        $this->attributes['body'] = preg_replace(
+            '/@([\w\-]+)/',
+            '<a href="/profiles/$1">$0</a>',
+            $body
+        );
+    }
 
 }
