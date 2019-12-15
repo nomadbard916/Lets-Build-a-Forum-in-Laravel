@@ -18,6 +18,7 @@
         <script>
             window.App = {!! json_encode([
             'csrfToken' => csrf_token(),
+            'user' => Auth::user(),
             'signedIn' => Auth::check()
         ]) !!};
         </script>
@@ -44,6 +45,8 @@
                 display: none;
             }
         </style>
+
+        @yield('head')
     </head>
 
     <body>
@@ -57,6 +60,7 @@
 
         <!-- Scripts -->
         <script src="{{ asset('js/app.js') }}"></script>
+        @yield('scripts')
     </body>
 
 </html>

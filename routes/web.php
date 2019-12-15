@@ -1,5 +1,8 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -41,3 +44,6 @@ Route::delete('/profiles/{user}/notifications/{notification}', 'UserNotification
 
 
 Route::get('profiles/{user}', 'ProfilesController@show')->name('profile');
+
+
+Route::get('api/users', 'Api\UsersController@index');
