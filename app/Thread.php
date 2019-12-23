@@ -179,4 +179,6 @@ class Thread extends Model
         // compare that carbon instance wth the $thread->updated_at
         return $this->updated_at > cache($key);
     }
+
+
 }
