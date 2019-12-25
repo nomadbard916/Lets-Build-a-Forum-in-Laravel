@@ -22,6 +22,14 @@ class CreateThreadsTest extends TestCase
     }
 
     /** @test */
+    public function authenticated_users_must_first_confirm_their_email_address_before_creating_threads()
+    {
+        $this->publishThread()
+            ->assertRedirect('/threads')
+            ->assertSessionHas('flash', 'You must first confirm your email address.');
+    }
+
+    /** @test */
     public function an_authenticated_user_can_create_new_forum_threads()
     {
         $this->signIn();
@@ -73,17 +81,14 @@ class CreateThreadsTest extends TestCase
         $this->signIn();
         $this->delete($thread->path())->assertStatus(403);
 
-
     }
-
-
 
     /** @test */
     public function authorized_users_can_delete_threads()
     {
         $this->signIn();
 
-        $thread = create('App\Thread', ['user_id'=>\auth()->id()]);
+        $thread = create('App\Thread', ['user_id' => \auth()->id()]);
         $reply  = create('App\Reply', ['thread_id' => $thread->id]);
 
         $response = $this->json('DELETE', $thread->path());
@@ -92,18 +97,15 @@ class CreateThreadsTest extends TestCase
         $this->assertDatabaseMissing('threads', ['id' => $thread->id]);
         $this->assertDatabaseMissing('replies', ['id' => $reply->id]);
         $this->assertDatabaseMissing('activities', [
-            'subject_id' => $thread->id,
-            'subject_type' => get_class($thread)
+            'subject_id'   => $thread->id,
+            'subject_type' => get_class($thread),
         ]);
         $this->assertDatabaseMissing('activities', [
-            'subject_id' => $reply->id,
-            'subject_type' => get_class($reply)
+            'subject_id'   => $reply->id,
+            'subject_type' => get_class($reply),
         ]);
 
     }
-
-
-
 
     protected function publishThread($overrides = [])
     {
