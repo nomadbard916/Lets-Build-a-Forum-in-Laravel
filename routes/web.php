@@ -40,6 +40,7 @@ Route::delete('/threads/{channel}/{thread}/subscriptions', 'ThreadSubscriptionsC
 Route::get('/profiles/{user}/notifications', 'UserNotificationsController@index');
 Route::delete('/profiles/{user}/notifications/{notification}', 'UserNotificationsController@destroy');
 
+Route::get('/register/confirm', 'Auth\RegisterConfirmationController@index')->name('register.confirm');
 
 
 

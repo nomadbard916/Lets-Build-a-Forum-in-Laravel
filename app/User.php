@@ -29,6 +29,15 @@ class User extends Authenticatable
     ];
 
     /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'confirmed' => 'boolean'
+    ];
+
+    /**
      * Get the route key name for Laravel.
      *
      * @return string
@@ -90,5 +99,14 @@ class User extends Authenticatable
     public function getAvatarPathAttribute($avatar)
     {
         return asset($avatar ?: 'images/avatars/default.png');
+    }
+
+     /**
+     * Mark the user's account as confirmed.
+     */
+    public function confirm()
+    {
+        $this->confirmed = true;
+        $this->save();
     }
 }
