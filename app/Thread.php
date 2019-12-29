@@ -206,4 +206,24 @@ class Thread extends Model
 
     }
 
+     /**
+     * Determine if the current reply is marked as the best.
+     *
+     * @return bool
+     */
+    public function isBest()
+    {
+        return $this->thread->best_reply_id == $this->id;
+    }
+
+     /**
+     * Mark the given reply as the best answer.
+     *
+     * @param Reply $reply
+     */
+    public function markBestReply(Reply $reply)
+    {
+        $this->update(['best_reply_id' => $reply->id]);
+    }
+
 }
