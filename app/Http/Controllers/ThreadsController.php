@@ -9,7 +9,6 @@ use App\Inspections\Spam;
 use Illuminate\Http\Request;
 use App\Filters\ThreadFilters;
 
-
 class ThreadsController extends Controller
 {
     /**
@@ -59,20 +58,21 @@ class ThreadsController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'title' => 'required|spamfree',
-            'body' => 'required|spamfree',
+            'title'      => 'required|spamfree',
+            'body'       => 'required|spamfree',
             'channel_id' => 'required|exists:channels,id',
         ]);
-
-
 
         $thread = Thread::create([
             'user_id'    => auth()->id(),
             'channel_id' => request('channel_id'),
             'title'      => request('title'),
-            'body' => request('body'),
-            'slug' => request('title')
+            'body'       => request('body'),
         ]);
+
+        if (request()->wantsJson()) {
+            return response($thread, 201);
+        }
 
         return redirect($thread->path())
             ->with('flash', 'Your thread has been published!');
@@ -95,7 +95,6 @@ class ThreadsController extends Controller
         $trending->push($thread);
 
         $thread->increment('visits');
-
 
         return view('threads.show', compact('thread'));
     }
