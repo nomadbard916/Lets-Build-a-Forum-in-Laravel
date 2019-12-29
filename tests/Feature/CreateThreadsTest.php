@@ -2,8 +2,9 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use App\Thread;
 use Tests\TestCase;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class CreateThreadsTest extends TestCase
 {
@@ -25,11 +26,11 @@ class CreateThreadsTest extends TestCase
     public function new_users_must_first_confirm_their_email_address_before_creating_threads()
     {
         $user = factory('App\User')->states('unconfirmed')->create();
-$this->signIn($user);
-$thread = make('App\Thread');
-$this->post(route('threads'), $thread->toArray())
-    ->assertRedirect(route('threads'))
-    ->assertSessionHas('flash', 'You must first confirm your email address.');
+        $this->signIn($user);
+        $thread = make('App\Thread');
+        $this->post(route('threads'), $thread->toArray())
+            ->assertRedirect(route('threads'))
+            ->assertSessionHas('flash', 'You must first confirm your email address.');
 
     }
 
@@ -71,6 +72,21 @@ $this->post(route('threads'), $thread->toArray())
 
         $this->publishThread(['channel_id' => 999])
             ->assertSessionHasErrors('channel_id');
+    }
+
+    /** @test */
+    public function a_thread_requires_a_unique_slug()
+    {
+        $this->signIn();
+        $thread = create('App\Thread', ['title' => 'Foo Title', 'slug' => 'foo-title']);
+
+        $this->assertEquals($thread->fresh()->slug, 'foo-title');
+
+        $this->post(route('threads'), $thread->toArray());
+        $this->assertTrue(Thread::whereSlug('foo-title-2')->exists());
+
+        $this->post(route('threads'), $thread->toArray());
+        $this->assertTrue(Thread::whereSlug('foo-title-3')->exists());
     }
 
     /** @test */
