@@ -99,6 +99,14 @@ class Thread extends Model
     }
 
     /**
+     * Lock the thread.
+     */
+    public function lock()
+    {
+        $this->update(['locked' => true]);
+    }
+
+    /**
      * Apply all relevant thread filters.
      *
      * @param  Builder       $query
@@ -206,7 +214,7 @@ class Thread extends Model
 
     }
 
-     /**
+    /**
      * Determine if the current reply is marked as the best.
      *
      * @return bool
@@ -216,7 +224,7 @@ class Thread extends Model
         return $this->thread->best_reply_id == $this->id;
     }
 
-     /**
+    /**
      * Mark the given reply as the best answer.
      *
      * @param Reply $reply
