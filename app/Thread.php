@@ -27,6 +27,15 @@ class Thread extends Model
      */
     protected $appends = ['isSubscribedTo'];
 
+     /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'locked' => 'boolean'
+    ];
+
     protected static function boot()
     {
         parent::boot();
