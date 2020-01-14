@@ -56,3 +56,5 @@ Route::get('profiles/{user}', 'ProfilesController@show')->name('profile');
 
 Route::get('api/users', 'Api\UsersController@index');
 Route::post('api/users/{user}/avatar', 'Api\UserAvatarController@store')->middleware('auth')->name('avatar');
+
+Route::patch('threads/{channel}/{thread}', 'ThreadsController@update');
