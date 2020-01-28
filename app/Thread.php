@@ -4,6 +4,7 @@ namespace App;
 
 use Laravel\Scout\Searchable;
 use App\Filters\ThreadFilters;
+use Stevebauman\Purify\Purify;
 use App\Events\ThreadReceivedNewReply;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
@@ -252,6 +253,17 @@ class Thread extends Model
     public function toSearchableArray()
     {
         return $this->toArray() + ['path' => $this->path()];
+    }
+
+    /**
+     * Access the body attribute.
+     *
+     * @param  string $body
+     * @return string
+     */
+    public function getBodyAttribute($body)
+    {
+        return Purify::clean($body);
     }
 
 }

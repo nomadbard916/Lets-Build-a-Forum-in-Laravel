@@ -3,6 +3,7 @@
 namespace App;
 
 use Carbon\Carbon;
+use Stevebauman\Purify\Purify;
 use Illuminate\Database\Eloquent\Model;
 
 class Reply extends Model
@@ -89,6 +90,17 @@ class Reply extends Model
             '<a href="/profiles/$1">$0</a>',
             $body
         );
+    }
+
+    /**
+     * Access the body attribute.
+     *
+     * @param  string $body
+     * @return string
+     */
+    public function getBodyAttribute($body)
+    {
+        return Purify::clean($body);
     }
 
 }
